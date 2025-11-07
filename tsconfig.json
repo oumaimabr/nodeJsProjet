@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES6",                     // Version JavaScript cible
+    "module": "commonjs",                // Module système utilisé
+    "outDir": "./dist",                  // Dossier de sortie
+    "rootDir": "./src",                  // Dossier source
+    "strict": true,                      // Activer les vérifications strictes
+    "esModuleInterop": true              // Activer l'interopérabilité des modules ES
+  },
+  "include": ["src"],                    // Inclure le dossier source
+  "exclude": ["node_modules"]            // Exclure les dépendances
+}
