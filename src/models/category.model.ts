@@ -42,7 +42,7 @@ const CategorySchema: Schema<ICategory, CategoryModel, ICategoryInstanceMethods>
     },
     slug: { 
       type: String, 
-      required: false, // CHANGEMENT : Rendre le slug non obligatoire
+      required: false,
       unique: true,
       lowercase: true,
       trim: true,
@@ -79,22 +79,6 @@ const CategorySchema: Schema<ICategory, CategoryModel, ICategoryInstanceMethods>
     }
   },
   { 
-    timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
-  }
-);
-
-// Index pour améliorer les performances
-CategorySchema.index({ slug: 1 });
-CategorySchema.index({ parentCategory: 1 });
-CategorySchema.index({ isActive: 1 });
-
-// Virtual pour les sous-catégories
-CategorySchema.virtual('subCategories', {
-  ref: 'Category',
-  localField: '_id',
-  foreignField: 'parentCategory'
 });
 
 // Virtual pour le comptage des produits
@@ -107,7 +91,8 @@ CategorySchema.virtual('productCount', {
 
 // CORRECTION : Middleware pour générer le slug automatiquement
 CategorySchema.pre('save', function(next) {
-  if (this.isModified('name') && !this.slug) {
+  // Regenerate slug if name is modified, even if slug exists
+  if (this.isModified('name')) {
     this.slug = this.name
       .toLowerCase()
       .normalize('NFD')
